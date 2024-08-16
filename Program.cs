@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.OpenApi;
 using System.Diagnostics;
 using Steam_Game_Page_Parser;
-using System.Net;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,9 +25,7 @@ app.MapGet("/GetGamePage", (string url) =>
 {
     string fileName = PythonWorker.GetGamePageFileName(url);
 
-    var client = new WebClient();
-    var text = client.DownloadString(fileName);
-
+    var text = File.ReadAllText(fileName);
     return Results.Text(text, "text/html");
 });
 
