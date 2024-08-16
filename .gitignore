@@ -3,6 +3,9 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# my temp folder for loaded pages
+temp
+
 # dotenv files
 .env
 

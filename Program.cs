@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.OpenApi;
+using System.Diagnostics;
+using Steam_Game_Page_Parser;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +21,20 @@ if (app.Environment.IsDevelopment())
 app.UseDefaultFiles(); // Отправка статических веб-страниц по умолчанию без обращения к ним по полному пути
 app.UseStaticFiles(); // обрабатывает все запросы к wwwroot
 
-app.MapGet("/test", () => 
+app.MapGet("/GetGamePage", (string url) => 
 {
-    
+    string fileName = PythonWorker.GetGamePageFileName(url);
+
+    var client = new WebClient();
+    var text = client.DownloadString(fileName);
+
+    return Results.Text(text, "text/html");
+});
+
+app.MapGet("/GetGameUrlByName", (string name) => 
+{
+    string url = PythonWorker.GetGameUrlByName(name);
+    return Results.Text(url, "text/html");
 });
 
 app.Run();
