@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Http.Connections;
+using System.Diagnostics;
 
 namespace Steam_Game_Page_Parser
 {
@@ -6,7 +7,10 @@ namespace Steam_Game_Page_Parser
     {
         public static string GetGamePageFileName(string url)
         {
-            return RunPython($"Python/GetGamePage.py {url}");
+            string name = RunPython($"Python/GetGamePage.py {url}");
+            name = name.Replace($"{(char)13}", "");
+            name = name.Replace($"{(char)10}", "");
+            return name;
         }
         public static string GetGameUrlByName(string name)
         {

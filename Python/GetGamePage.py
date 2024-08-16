@@ -25,7 +25,6 @@ def WritePageToFile(page):
 
     return fileName
 
-#url = "https://store.steampowered.com/app/413150/Stardew_Valley/"
 url = sys.argv[1]
 
 response = requests.get(url)
