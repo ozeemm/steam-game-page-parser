@@ -2,7 +2,7 @@ function showPage() {
     gameName = document.getElementById("GameName").value;
     statusLogger = document.getElementById("StatusLog");
     
-    const url = "https://localhost:7103/GetGamePage?name=" + gameName;
+    const url = "/GetGamePage?name=" + gameName;
 
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url);
