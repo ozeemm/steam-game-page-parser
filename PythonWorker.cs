@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.Connections;
+using System;
 using System.Diagnostics;
 
 namespace Steam_Game_Page_Parser
@@ -8,16 +9,14 @@ namespace Steam_Game_Page_Parser
         public static string GetGamePageFileName(string url)
         {
             string name = RunPython($"Python/GetGamePage.py {url}");
-            name = name.Replace($"{(char)13}", "");
-            name = name.Replace($"{(char)10}", "");
+            name = DeleteEndings(name);
 
             return name;
         }
         public static string GetGameUrlByName(string name)
         {
             string url = RunPython($"Python/GetGameUrlByName.py {name}");
-            url = url.Replace($"{(char)13}", "");
-            url = url.Replace($"{(char)10}", "");
+            url = DeleteEndings(url);
 
             return url;
         }
@@ -37,6 +36,13 @@ namespace Steam_Game_Page_Parser
                     return result;
                 }
             }
+        }
+        private static string DeleteEndings(string text)
+        {
+            text = text.Replace($"{(char)13}", "");
+            text = text.Replace($"{(char)10}", "");
+
+            return text;
         }
     }
 }
