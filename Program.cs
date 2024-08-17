@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Steam_Game_Page_Parser;
 using System.Text;
+using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,18 +22,14 @@ if (app.Environment.IsDevelopment())
 app.UseDefaultFiles(); // Отправка статических веб-страниц по умолчанию без обращения к ним по полному пути
 app.UseStaticFiles(); // обрабатывает все запросы к wwwroot
 
-app.MapGet("/GetGamePage", (string url) => 
-{
-    string fileName = PythonWorker.GetGamePageFileName(url);
-
-    var text = File.ReadAllText(fileName);
-    return Results.Text(text, "text/html");
-});
-
-app.MapGet("/GetGameUrlByName", (string name) => 
+app.MapPost("/GetGamePage", (string name) =>
 {
     string url = PythonWorker.GetGameUrlByName(name);
-    return Results.Text(url, "text/html");
+
+    string fileName = PythonWorker.GetGamePageFileName(url);
+    var html = File.ReadAllText(fileName);
+
+    return Results.Text(html, "text/html");
 });
 
 app.Run();

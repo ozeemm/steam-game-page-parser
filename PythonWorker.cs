@@ -10,11 +10,16 @@ namespace Steam_Game_Page_Parser
             string name = RunPython($"Python/GetGamePage.py {url}");
             name = name.Replace($"{(char)13}", "");
             name = name.Replace($"{(char)10}", "");
+
             return name;
         }
         public static string GetGameUrlByName(string name)
         {
-            return RunPython($"Python/GetGameUrlByName.py {name}");
+            string url = RunPython($"Python/GetGameUrlByName.py {name}");
+            url = url.Replace($"{(char)13}", "");
+            url = url.Replace($"{(char)10}", "");
+
+            return url;
         }
         private static string RunPython(string args)
         {
