@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Connections;
 using System;
 using System.Diagnostics;
+using Steam_Game_Page_Parser.Exceptions;
 
 namespace Steam_Game_Page_Parser
 {
@@ -17,6 +18,8 @@ namespace Steam_Game_Page_Parser
         {
             string url = RunPython($"Python/GetGameUrlByName.py {name}");
             url = DeleteEndings(url);
+            if (url == "Game Not Found")
+                throw new GameNotFoundException();
 
             return url;
         }
@@ -37,6 +40,7 @@ namespace Steam_Game_Page_Parser
                 }
             }
         }
+
         private static string DeleteEndings(string text)
         {
             text = text.Replace($"{(char)13}", "");

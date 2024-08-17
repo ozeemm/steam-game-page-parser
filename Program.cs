@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.OpenApi;
 using System.Diagnostics;
 using Steam_Game_Page_Parser;
-using System.Text;
-using System.Xml.Linq;
+using Steam_Game_Page_Parser.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +23,15 @@ app.UseStaticFiles(); // обрабатывает все запросы к wwwro
 
 app.MapPost("/GetGamePage", (string name) =>
 {
-    string url = PythonWorker.GetGameUrlByName(name);
+    string url;
+    try
+    {
+        url = PythonWorker.GetGameUrlByName(name);
+    }
+    catch(GameNotFoundException e)
+    {
+        return Results.NotFound();
+    }
 
     string fileName = PythonWorker.GetGamePageFileName(url);
     var html = File.ReadAllText(fileName);
