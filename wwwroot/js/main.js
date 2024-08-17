@@ -1,7 +1,4 @@
 function showPage() {
-    gameName = document.getElementById("GameName").value;
-    statusLogger = document.getElementById("StatusLog");
-    
     statusLogger.innerHTML = "Загрузка...";
 
     const url = "/GetGamePage?name=" + gameName;
@@ -10,7 +7,6 @@ function showPage() {
     xhr.open("POST", url, true);
     xhr.onloadend = () => {
         if(xhr.status == 200){
-            //document.getElementById("SteamPage").innerHTML = '<html>' + xhr.response + '</html>';
             document.documentElement.innerHTML += '<html>' + xhr.response + '</html>';
         }
         else if(xhr.status == 404){
@@ -24,4 +20,17 @@ function showPage() {
         statusLogger.innerHTML = "Error!";
     }
     xhr.send();
+}
+
+gameNameInput = document.getElementById("GameName");
+statusLogger = document.getElementById("StatusLog");
+
+// По сути тут просто функция кнопки, но чтоб страница обновлялась и параметр был
+let search = window.location.search;
+let params = new URLSearchParams(search);
+if(params.has('search')){
+    gameName = params.get('search');
+    gameNameInput.value = gameName;
+    
+    showPage();
 }
